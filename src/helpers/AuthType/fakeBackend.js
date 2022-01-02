@@ -2,42 +2,14 @@ import axios from "axios"
 import MockAdapter from "axios-mock-adapter"
 import * as url from "../url_helper"
 import accessToken from "../jwt-token-access/accessToken"
-import {
-  calenderDefaultCategories,
-  chats,
-  contacts,
-  cryptoOrders,
-  events,
-  groups,
-  invoiceList,
-  messages,
-  projects,
-  inboxmails,
-  starredmails,
-  importantmails,
-  draftmails,
-  sentmails,
-  trashmails,
-  tasks,
-  userProfile,
-  users as members,
-  wallet,
-  janTopSellingData,
-  decTopSellingData,
-  novTopSellingData,
-  octTopSellingData,
-  janEarningData,
-  decEarningData,
-  novEarningData,
-  octEarningData,
-} from "../../common/data"
+import { calenderDefaultCategories, chats, contacts, cryptoOrders, events, groups, invoiceList, messages, projects, inboxmails, starredmails, importantmails, draftmails, sentmails, trashmails, tasks, userProfile, users as members, wallet, janTopSellingData, decTopSellingData, novTopSellingData, octTopSellingData, janEarningData, decEarningData, novEarningData, octEarningData } from "../../common/data"
 
 let users = [
   {
     uid: 1,
     username: "admin",
     role: "admin",
-    password: "123456",
+    password: "admin",
     email: "admin@themesbrand.com",
   },
 ]
@@ -46,7 +18,7 @@ const fakeBackend = () => {
   // This sets the mock adapter on the default instance
   const mock = new MockAdapter(axios)
 
-  mock.onPost(url.POST_FAKE_REGISTER).reply(config => {
+  mock.onPost(url.POST_FAKE_REGISTER).reply((config) => {
     const user = JSON.parse(config["data"])
     users.push(user)
     return new Promise((resolve, reject) => {
@@ -56,26 +28,22 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost("/post-fake-login").reply(config => {
+  mock.onPost("/post-fake-login").reply((config) => {
     const user = JSON.parse(config["data"])
-    const validUser = users.filter(
-      usr => usr.email === user.email && usr.password === user.password
-    )
+    const validUser = users.filter((usr) => usr.email === user.email && usr.password === user.password)
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (validUser["length"] === 1) {
           resolve([200, validUser[0]])
         } else {
-          reject([
-            "Username and password are invalid. Please enter correct username and password",
-          ])
+          reject(["Username and password are invalid. Please enter correct username and password"])
         }
       })
     })
   })
 
-  mock.onPost("/fake-forget-pwd").reply(config => {
+  mock.onPost("/fake-forget-pwd").reply((config) => {
     // User needs to check that user is eXist or not and send mail for Reset New password
 
     return new Promise((resolve, reject) => {
@@ -85,7 +53,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost("/post-jwt-register").reply(config => {
+  mock.onPost("/post-jwt-register").reply((config) => {
     const user = JSON.parse(config["data"])
     users.push(user)
 
@@ -96,11 +64,9 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost("/post-jwt-login").reply(config => {
+  mock.onPost("/post-jwt-login").reply((config) => {
     const user = JSON.parse(config["data"])
-    const validUser = users.filter(
-      usr => usr.email === user.email && usr.password === user.password
-    )
+    const validUser = users.filter((usr) => usr.email === user.email && usr.password === user.password)
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -114,23 +80,20 @@ const fakeBackend = () => {
 
           resolve([200, validUserObj])
         } else {
-          reject([
-            400,
-            "Username and password are invalid. Please enter correct username and password",
-          ])
+          reject([400, "Username and password are invalid. Please enter correct username and password"])
         }
       })
     })
   })
 
-  mock.onPost("/post-jwt-profile").reply(config => {
+  mock.onPost("/post-jwt-profile").reply((config) => {
     const user = JSON.parse(config["data"])
 
     const one = config.headers
 
     let finalToken = one.Authorization
 
-    const validUser = users.filter(usr => usr.uid === user.idx)
+    const validUser = users.filter((usr) => usr.uid === user.idx)
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -140,7 +103,7 @@ const fakeBackend = () => {
             let objIndex
 
             //Find index of specific object using findIndex method.
-            objIndex = users.findIndex(obj => obj.uid === user.idx)
+            objIndex = users.findIndex((obj) => obj.uid === user.idx)
 
             //Update object's name property.
             users[objIndex].username = user.username
@@ -160,10 +123,10 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost("/post-fake-profile").reply(config => {
+  mock.onPost("/post-fake-profile").reply((config) => {
     const user = JSON.parse(config["data"])
 
-    const validUser = users.filter(usr => usr.uid === user.idx)
+    const validUser = users.filter((usr) => usr.uid === user.idx)
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -171,7 +134,7 @@ const fakeBackend = () => {
           let objIndex
 
           //Find index of specific object using findIndex method.
-          objIndex = users.findIndex(obj => obj.uid === user.idx)
+          objIndex = users.findIndex((obj) => obj.uid === user.idx)
 
           //Update object's name property.
           users[objIndex].username = user.username
@@ -188,7 +151,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost("/jwt-forget-pwd").reply(config => {
+  mock.onPost("/jwt-forget-pwd").reply((config) => {
     // User needs to check that user is eXist or not and send mail for Reset New password
 
     return new Promise((resolve, reject) => {
@@ -198,7 +161,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost("/social-login").reply(config => {
+  mock.onPost("/social-login").reply((config) => {
     const user = JSON.parse(config["data"])
 
     return new Promise((resolve, reject) => {
@@ -213,15 +176,11 @@ const fakeBackend = () => {
 
           resolve([200, validUserObj])
         } else {
-          reject([
-            400,
-            "Username and password are invalid. Please enter correct username and password",
-          ])
+          reject([400, "Username and password are invalid. Please enter correct username and password"])
         }
       })
     })
   })
-
 
   mock.onGet(url.GET_EVENTS).reply(() => {
     return new Promise((resolve, reject) => {
@@ -249,7 +208,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost(url.ADD_NEW_INBOX_MAIL).reply(inboxmail => {
+  mock.onPost(url.ADD_NEW_INBOX_MAIL).reply((inboxmail) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (inboxmail && inboxmail.data) {
@@ -262,7 +221,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onDelete(url.DELETE_INBOX_MAIL).reply(config => {
+  mock.onDelete(url.DELETE_INBOX_MAIL).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -337,7 +296,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost(url.ADD_NEW_USER).reply(user => {
+  mock.onPost(url.ADD_NEW_USER).reply((user) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (user && user.data) {
@@ -350,7 +309,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPut(url.UPDATE_USER).reply(user => {
+  mock.onPut(url.UPDATE_USER).reply((user) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (user && user.data) {
@@ -363,7 +322,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onDelete(url.DELETE_USER).reply(config => {
+  mock.onDelete(url.DELETE_USER).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -376,7 +335,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost(url.ADD_NEW_PROJECT).reply(project => {
+  mock.onPost(url.ADD_NEW_PROJECT).reply((project) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (project && project.data) {
@@ -389,7 +348,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPut(url.UPDATE_PROJECT).reply(project => {
+  mock.onPut(url.UPDATE_PROJECT).reply((project) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (project && project.data) {
@@ -402,7 +361,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onDelete(url.DELETE_PROJECT).reply(config => {
+  mock.onDelete(url.DELETE_PROJECT).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -415,7 +374,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost(url.ADD_NEW_EVENT).reply(event => {
+  mock.onPost(url.ADD_NEW_EVENT).reply((event) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (event && event.data) {
@@ -428,7 +387,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPut(url.UPDATE_EVENT).reply(event => {
+  mock.onPut(url.UPDATE_EVENT).reply((event) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (event && event.data) {
@@ -441,7 +400,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onDelete(url.DELETE_EVENT).reply(config => {
+  mock.onDelete(url.DELETE_EVENT).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -506,15 +465,13 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(new RegExp(`${url.GET_MESSAGES}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.GET_MESSAGES}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (messages) {
           // Passing fake JSON data as response
           const { params } = config
-          const filteredMessages = messages.filter(
-            msg => msg.roomId === params.roomId
-          )
+          const filteredMessages = messages.filter((msg) => msg.roomId === params.roomId)
           resolve([200, filteredMessages])
         } else {
           reject([400, "Cannot get messages"])
@@ -523,7 +480,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onPost(url.ADD_MESSAGE).reply(config => {
+  mock.onPost(url.ADD_MESSAGE).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config.data) {
@@ -575,15 +532,13 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(new RegExp(`${url.GET_INVOICE_DETAIL}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.GET_INVOICE_DETAIL}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (invoiceList) {
           // Passing fake JSON data as response
           const { params } = config
-          const invoice = invoiceList.find(
-            invoice => invoice.id.toString() === params.id.toString()
-          )
+          const invoice = invoiceList.find((invoice) => invoice.id.toString() === params.id.toString())
           resolve([200, invoice])
         } else {
           reject([400, "Cannot get invoice"])
@@ -605,15 +560,13 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(new RegExp(`${url.GET_PROJECT_DETAIL}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.GET_PROJECT_DETAIL}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (projects) {
           // Passing fake JSON data as response
           const { params } = config
-          const project = projects.find(
-            project => project.id.toString() === params.id.toString()
-          )
+          const project = projects.find((project) => project.id.toString() === params.id.toString())
           resolve([200, project])
         } else {
           reject([400, "Cannot get project detail"])
@@ -661,7 +614,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(new RegExp(`${url.TOP_SELLING_DATA}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.TOP_SELLING_DATA}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       const { params } = config
       setTimeout(() => {
@@ -686,7 +639,7 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(new RegExp(`${url.GET_EARNING_DATA}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.GET_EARNING_DATA}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       const { params } = config
       setTimeout(() => {

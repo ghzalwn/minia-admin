@@ -27,10 +27,10 @@ import logo from "../../assets/images/logo-sm.svg"
 import { facebook, google } from "../../config"
 import CarouselPage from "./CarouselPage"
 
-const Login = props => {
+const Login = (props) => {
   const dispatch = useDispatch()
 
-  const { error } = useSelector(state => ({
+  const { error } = useSelector((state) => ({
     error: state.Login.error,
   }))
 
@@ -39,38 +39,38 @@ const Login = props => {
     dispatch(loginUser(values, props.history))
   }
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      }
-      dispatch(socialLogin(postData, props.history, type))
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      }
-      dispatch(socialLogin(postData, props.history, type))
-    }
-  }
+  // const signIn = (res, type) => {
+  //   if (type === "google" && res) {
+  //     const postData = {
+  //       name: res.profileObj.name,
+  //       email: res.profileObj.email,
+  //       token: res.tokenObj.access_token,
+  //       idToken: res.tokenId,
+  //     }
+  //     dispatch(socialLogin(postData, props.history, type))
+  //   } else if (type === "facebook" && res) {
+  //     const postData = {
+  //       name: res.name,
+  //       email: res.email,
+  //       token: res.accessToken,
+  //       idToken: res.tokenId,
+  //     }
+  //     dispatch(socialLogin(postData, props.history, type))
+  //   }
+  // }
 
   //handleGoogleLoginResponse
-  const googleResponse = response => {
-    signIn(response, "google")
-  }
+  // const googleResponse = response => {
+  //   signIn(response, "google")
+  // }
 
   //handleTwitterLoginResponse
   // const twitterResponse = e => {}
 
   //handleFacebookLoginResponse
-  const facebookResponse = response => {
-    signIn(response, "facebook")
-  }
+  // const facebookResponse = response => {
+  //   signIn(response, "facebook")
+  // }
 
   return (
     <React.Fragment>
@@ -102,15 +102,7 @@ const Login = props => {
                       >
                         {error ? <Alert color="danger">{error}</Alert> : null}
                         <div className="mb-3">
-                          <AvField
-                            name="email"
-                            label="Email"
-                            value="admin@themesbrand.com"
-                            className="form-control"
-                            placeholder="Enter email"
-                            type="email"
-                            required
-                          />
+                          <AvField name="username" label="Username" value="admin" className="form-control" placeholder="Enter Username" type="text" required />
                         </div>
                         <div className="mb-3">
                           <div className="d-flex align-items-start">
@@ -119,20 +111,15 @@ const Login = props => {
                             </div>
                             <div className="flex-shrink-0">
                               <div className="">
-                                <Link to="/auth-recoverpw" className="text-muted">Forgot password?</Link>
+                                <Link to="/auth-recoverpw" className="text-muted">
+                                  Forgot password?
+                                </Link>
                               </div>
                             </div>
                           </div>
 
                           <div className="mb-3">
-                            <AvField
-                              name="password"
-                              value="123456"
-                              type="password"
-                              className="form-control"
-                              required
-                              placeholder="Enter Password"
-                            />
+                            <AvField name="password" value="admin" type="password" className="form-control" required placeholder="Enter Password" />
                           </div>
                         </div>
                         <div className="row mb-4">
@@ -144,14 +131,15 @@ const Login = props => {
                               </label>
                             </div>
                           </div>
-
                         </div>
                         <div className="mb-3">
-                          <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
+                          <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">
+                            Log In
+                          </button>
                         </div>
                       </AvForm>
 
-                      <div className="mt-4 text-center">
+                      {/* <div className="mt-4 text-center">
                         <h5 className="font-size-14 mb-3">Sign in with</h5>
 
                         <ul className="list-inline">
@@ -160,12 +148,8 @@ const Login = props => {
                               appId={facebook.APP_ID}
                               autoLoad={false}
                               callback={facebookResponse}
-                              render={renderProps => (
-                                <Link
-                                  to="#"
-                                  className="social-list-item bg-primary text-white border-primary"
-                                  onClick={renderProps.onClick}
-                                >
+                              render={(renderProps) => (
+                                <Link to="#" className="social-list-item bg-primary text-white border-primary" onClick={renderProps.onClick}>
                                   <i className="mdi mdi-facebook" />
                                 </Link>
                               )}
@@ -175,29 +159,32 @@ const Login = props => {
                           <li className="list-inline-item">
                             <GoogleLogin
                               clientId={google.CLIENT_ID}
-                              render={renderProps => (
-                                <Link
-                                  to="#"
-                                  className="social-list-item bg-danger text-white border-danger"
-                                  onClick={renderProps.onClick}
-                                >
+                              render={(renderProps) => (
+                                <Link to="#" className="social-list-item bg-danger text-white border-danger" onClick={renderProps.onClick}>
                                   <i className="mdi mdi-google" />
                                 </Link>
                               )}
                               onSuccess={googleResponse}
-                              onFailure={() => { }}
+                              onFailure={() => {}}
                             />
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
 
                       <div className="mt-5 text-center">
-                        <p className="text-muted mb-0">Don't have an account ? <Link to="/register"
-                          className="text-primary fw-semibold"> Signup now </Link> </p>
+                        <p className="text-muted mb-0">
+                          Don't have an account ?{" "}
+                          <Link to="/register" className="text-primary fw-semibold">
+                            {" "}
+                            Signup now{" "}
+                          </Link>{" "}
+                        </p>
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                      <p className="mb-0">
+                        © {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand
+                      </p>
                     </div>
                   </div>
                 </div>
