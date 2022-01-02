@@ -30,7 +30,9 @@ const fakeBackend = () => {
 
   mock.onPost("/post-fake-login").reply((config) => {
     const user = JSON.parse(config["data"])
-    const validUser = users.filter((usr) => usr.email === user.email && usr.password === user.password)
+    console.log("user -> " + user.username)
+    console.log("user -> " + user.password)
+    const validUser = users.filter((usr) => usr.username === user.username && usr.password === user.password)
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
